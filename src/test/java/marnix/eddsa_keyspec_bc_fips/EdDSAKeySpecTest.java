@@ -2,24 +2,23 @@ package marnix.eddsa_keyspec_bc_fips;
 
 import java.math.BigInteger;
 import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 import java.security.spec.EdECPoint;
 import java.security.spec.EdECPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.NamedParameterSpec;
 
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.junit.jupiter.api.Test;
 
 class EdDSAKeySpecTest {
-	
+
 	private static Provider jvmSunECProvider = Security.getProvider("SunEC");
 
 	@Test
 	void SucceedWithSunECOnly() throws Throwable {
-		// use the standard JDK list of security providers, repairing from an earlier test if needed
+		// use the standard JDK list of security providers, repairing from an earlier
+		// test if needed
 		Security.removeProvider("BCFIPS");
 		if (Security.getProvider("SunEC") == null) {
 			Security.addProvider(jvmSunECProvider);
@@ -28,16 +27,31 @@ class EdDSAKeySpecTest {
 	}
 
 	@Test
-	void succeedWithBCFIPSandSunEC() throws Throwable {
-		// use BCFIPS...
+	void succeedWithBCFIPSthenSunEC() throws Throwable {
+		// use BCFIPS at the top...
 		Security.insertProviderAt(new BouncyCastleFipsProvider(), 1);
-		// ...and the standard list of security providers, repairing from an earlier test if needed
+		// ...and then the standard list of security providers, repairing from an
+		// earlier test if needed
 		if (Security.getProvider("SunEC") == null) {
 			Security.addProvider(jvmSunECProvider);
 		}
 		doScenario();
 	}
 
+	/**
+	 * This unit test fails as follows:
+	 * 
+	 * <pre>
+	 * java.security.spec.InvalidKeySpecException: keySpec for PublicKey not recognized: java.security.spec.EdECPublicKeySpec
+	 *         at org.bouncycastle.jcajce.provider.BaseKeyFactory.engineGeneratePublic(BaseKeyFactory.java:60)
+	 *         at org.bouncycastle.jcajce.provider.ProvEdEC$KeyFactorySpi.engineGeneratePublic(ProvEdEC.java:374)
+	 *         at java.base/java.security.KeyFactory.generatePublic(KeyFactory.java:351)
+	 *         at marnix.eddsa_keyspec_bc_fips.EdDSAKeySpecTest.doScenario(EdDSAKeySpecTest.java:63)
+	 *         at marnix.eddsa_keyspec_bc_fips.EdDSAKeySpecTest.failWithBCFIPSOnly(EdDSAKeySpecTest.java:46)
+	 * </pre>
+	 * 
+	 * @throws Throwable
+	 */
 	@Test
 	void failWithBCFIPSOnly() throws Throwable {
 		// make sure only the bc-fips.jar EdDSA implementation is available
@@ -46,7 +60,7 @@ class EdDSAKeySpecTest {
 		doScenario();
 	}
 
-	private void doScenario() throws NoSuchAlgorithmException, InvalidKeySpecException {
+	private void doScenario() throws Throwable {
 		// prepare the Java 15+ keyspec
 
 		// Example coordinates for an Ed25519 public key point
