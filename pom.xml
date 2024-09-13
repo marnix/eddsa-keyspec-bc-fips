@@ -15,7 +15,22 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bc-fips</artifactId>
-            <version>1.0.2.5</version>
+            <!--
+              All of the following behave identically for this project's tests.
+              =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+            -->
+            <!-- 
+              <version>1.0.2.5</version>
+              <scope>test</scope>
+            -->
+            <!-- 
+              <version>2.0.0</version>
+              <scope>test</scope>
+            -->
+            <!-- tested with the version from 2024-07-25 03:23:27 AM UTC -->
+            <version>2.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/test/resources/bc-fips-2.0.1-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
