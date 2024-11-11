@@ -29,6 +29,7 @@ class EdDSAKeySpecTest {
 	@Test
 	void succeedWithBCFIPSthenSunEC() throws Throwable {
 		// use BCFIPS at the top...
+		Security.removeProvider("BCFIPS");
 		Security.insertProviderAt(new BouncyCastleFipsProvider(), 1);
 		// ...and then the standard list of security providers, repairing from an
 		// earlier test if needed
@@ -55,6 +56,7 @@ class EdDSAKeySpecTest {
 	@Test
 	void failWithBCFIPSOnly() throws Throwable {
 		// make sure only the bc-fips.jar EdDSA implementation is available
+		Security.removeProvider("BCFIPS");
 		Security.insertProviderAt(new BouncyCastleFipsProvider(), 1);
 		Security.removeProvider("SunEC");
 		doScenario();
