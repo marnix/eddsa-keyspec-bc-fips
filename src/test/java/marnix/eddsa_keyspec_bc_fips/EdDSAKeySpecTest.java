@@ -67,15 +67,20 @@ class EdDSAKeySpecTest {
 
 		// Example coordinates for an Ed25519 public key point
 		// The X coordinate is a byte array; EdDSA only uses the X coordinate.
-		byte[] x = new byte[] { 0x7f, (byte) 0xb2, (byte) 0x9f, 0x19, (byte) 0x4f, 0x6c, (byte) 0x80, 0x6d, 0x12, 0x50,
-				0x0f, (byte) 0xce, 0x08, (byte) 0xba, (byte) 0xa8, 0x35, 0x71, 0x52, (byte) 0xee, (byte) 0xe4, 0x42,
-				0x3a, 0x3c, 0x46, 0x4c, 0x5b, 0x3b, (byte) 0xc4, 0x7a, (byte) 0xf4, 0x26 };
-		EdECPoint point = new EdECPoint(true, new BigInteger(x));
+		// In Ed25519, the public key is an 32 little-endian byte array:
+		byte[] ed25519PublicKey  = new byte[] {
+			    (byte)0x1A, (byte)0xD5, (byte)0x25, (byte)0x8F, (byte)0x60, (byte)0x2D, (byte)0x56, (byte)0xC9,
+			    (byte)0xB2, (byte)0xA7, (byte)0x25, (byte)0x95, (byte)0x60, (byte)0xC7, (byte)0x2C, (byte)0x69,
+			    (byte)0x5C, (byte)0xDC, (byte)0xD6, (byte)0xFD, (byte)0x31, (byte)0xE2, (byte)0xA4, (byte)0xC0,
+			    (byte)0xFE, (byte)0x53, (byte)0x6E, (byte)0xCD, (byte)0xD3, (byte)0x36, (byte)0x69, (byte)0x21
+			};
+
+		EdECPoint point = new EdECPoint(true, new BigInteger(ed25519PublicKey));
 		EdECPublicKeySpec publicKeySpec = new EdECPublicKeySpec(NamedParameterSpec.ED25519, point);
 
 		// use the keyspec
 
-		KeyFactory keyFactory = KeyFactory.getInstance("EdDSA");
+		KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
 		keyFactory.generatePublic(publicKeySpec); // ignore the result, for this test case...
 	}
 }
