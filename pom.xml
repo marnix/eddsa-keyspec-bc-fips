@@ -24,7 +24,11 @@
               <version>1.0.2.5</version>
               <scope>test</scope>
             -->
+            <!-- 
             <version>2.0.0</version>
+            <scope>test</scope>
+            -->
+            <version>2.0.1</version>
             <scope>test</scope>
             <!-- tested with the version from 2024-07-25 03:23:27 AM UTC -->
             <!-- 
